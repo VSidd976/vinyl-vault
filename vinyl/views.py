@@ -87,4 +87,60 @@ class ArtistRecords(mixins.GetObjectMixin[models.Artist], APIView):
         records = artist.records.all()
         serializer = serializers.RecordSerializer(records, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class LabelList(APIView):
+    def get(self, request):
+        labels = models.Label.objects.all()
+        serializer = serializers.LabeSerializer(labels, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = serializers.LabeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return error_response(
+            message="Помилка валідації лейблу",
+            details=serializer.errors,
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
+
+class LabelDetail(mixins.GetObjectMixin[models.Label], APIView):
+    def get(self, request, pk):
+        label = self.get_object(pk)
+        if not label:
+            return error_response("Лейбл не знайдено", status_code=status.HTTP_404_NOT_FOUND)
+        serializer = serializers.LabeSerializer(label)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        label = self.get_object(pk)
+        if not label:
+            return error_response("Лейбл не занйдено", status_code=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.LabeSerializer(label, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return error_response(
+            message="Помилка оновлення лейблу",
+            details=serializer.errors,
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
+
+    def delete(self, request, pk):
+        label = self.get_object(pk)
+        if not label:
+            return error_response("Лейбл не знайдено", status_code=status.HTTP_404_NOT_FOUND)
+
+        records_count = label.records.count()
+        if records_count > 0:
+            return error_response(
+                message=f"Неможливо видалити лейбл {label}, осклільки за ним закріплено {records_count} релізів",
+                status_code=status.HTTP_409_CONFLICT
+            )
+
+        label.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
