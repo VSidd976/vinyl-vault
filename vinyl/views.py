@@ -110,7 +110,7 @@ class LabelDetail(mixins.GetObjectMixin[models.Label], APIView):
         label = self.get_object(pk)
         if not label:
             return error_response("Лейбл не знайдено", status_code=status.HTTP_404_NOT_FOUND)
-        serializer = serializers.LabeSerializer(label)
+        serializer = serializers.LabelSerializer(label)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
@@ -118,7 +118,7 @@ class LabelDetail(mixins.GetObjectMixin[models.Label], APIView):
         if not label:
             return error_response("Лейбл не занйдено", status_code=status.HTTP_404_NOT_FOUND)
 
-        serializer = serializers.LabeSerializer(label, data=request.data)
+        serializer = serializers.LabelSerializer(label, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -142,5 +142,84 @@ class LabelDetail(mixins.GetObjectMixin[models.Label], APIView):
             )
 
         label.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class RecordList(APIView):
+    def get(self, request):
+        queryset = models.Record.objects.select_related("artist", "label").prefetch_related("genres").all()
+
+        search = request.query_params.get("search")
+        if search:
+            queryset = queryset.filter(title__icontains=search) | queryset.filter(artist__name__icontains=search)
+
+        genre_id = request.query_params.get("genre_id")
+        if genre_id:
+            queryset = queryset.filter(genres__id=genre_id)
+
+        label_id = request.query_params.get("label_id")
+        if label_id:
+            queryset = queryset.filter(label_id=label_id)
+
+        sort_by = request.query_params.get("sort_by")
+        if sort_by == "price_asc":
+            queryset = queryset.order_by("price")
+
+        elif sort_by == "price_desc":
+            queryset = queryset.order_by("-price")
+
+        elif sort_by == "yaer_asc":
+            queryset = queryset.order_by("release_year")
+
+        elif sort_by == "year_desc":
+            queryset = queryset.order_by("-release_year")
+
+        serializer = serializers.RecordReadSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = serializers.RecordWriteSerializer(data=request.data)
+        if serializer.is_valid():
+            record = serializer.save()
+            read_serializer = serializers.RecordReadSerializer(record)
+            return Response(read_serializer.data, status=status.HTTP_201_CREATED)
+
+        return error_response(
+            message="Помилка валідації даних платівки",
+            details=serializer.errors,
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
+
+class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
+    def get(self, request, pk):
+        record = self.get_object(pk)
+        if not record:
+            return error_response("Платівку не знайдено", status_code=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.RecordReadSerializer(record)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        record = self.get_object(pk)
+        if not record:
+            return error_response("Платівку не знайдено", status_code=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.RecordWriteSerializer(record, data=request.data)
+        if serializer.is_valid():
+            update_record = serializer.save()
+            read_serializer = serializers.RecordReadSerializer(update_record)
+            return Response(read_serializer.data, status=status.HTTP_200_OK)
+
+        return error_response(
+            message="Помилка оновлення платівки",
+            details=serializer.errors,
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
+
+    def delete(self, request, pk):
+        record = self.get_object(pk)
+        if not record:
+            return error_response("Платівку не знайдено", status_code=status.HTTP_404_NOT_FOUND)
+
+        record.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
