@@ -17,14 +17,15 @@ class ArtistList(APIView):
 
     def post(self, request):
         serializer = serializers.ArtistSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return error_response(
-            message="Помилка валідації даних артиста",
-            details=serializer.errors,
-            status_code=status.HTTP_400_BAD_REQUEST
-        )
+        if not serializer.is_valid():
+            return error_response(
+                message="Помилка валідації даних артиста",
+                details=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class ArtistDetail(mixins.GetObjectMixin[models.Artist], APIView):
     # def get_object(self, pk):
@@ -44,17 +45,17 @@ class ArtistDetail(mixins.GetObjectMixin[models.Artist], APIView):
         artist = self.get_object(pk)
         if not artist:
             return error_response("Артиств не знайдено", status_code=status.HTTP_404_NOT_FOUND)
+        
         serializer = serializers.ArtistSerializer(artist, data=request.data)
-        
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        return error_response(
-            message="Помилка оновлення артиста",
-            details=serializer.errors,
-            status_code=status.HTTP_400_BAD_REQUEST
-        )
+        if not serializer.is_valid():    
+            return error_response(
+                message="Помилка оновлення артиста",
+                details=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
         artist = self.get_object(pk)
@@ -96,14 +97,15 @@ class LabelList(APIView):
 
     def post(self, request):
         serializer = serializers.LabeSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return error_response(
-            message="Помилка валідації лейблу",
-            details=serializer.errors,
-            status_code=status.HTTP_400_BAD_REQUEST
-        )
+        if not serializer.is_valid():
+            return error_response(
+                message="Помилка валідації лейблу",
+                details=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class LabelDetail(mixins.GetObjectMixin[models.Label], APIView):
     def get(self, request, pk):
@@ -119,15 +121,15 @@ class LabelDetail(mixins.GetObjectMixin[models.Label], APIView):
             return error_response("Лейбл не занйдено", status_code=status.HTTP_404_NOT_FOUND)
 
         serializer = serializers.LabelSerializer(label, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        return error_response(
-            message="Помилка оновлення лейблу",
-            details=serializer.errors,
-            status_code=status.HTTP_400_BAD_REQUEST
-        )
+        if not serializer.is_valid():
+            return error_response(
+                message="Помилка оновлення лейблу",
+                details=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
         label = self.get_object(pk)
@@ -178,16 +180,16 @@ class RecordList(APIView):
 
     def post(self, request):
         serializer = serializers.RecordWriteSerializer(data=request.data)
-        if serializer.is_valid():
-            record = serializer.save()
-            read_serializer = serializers.RecordReadSerializer(record)
-            return Response(read_serializer.data, status=status.HTTP_201_CREATED)
+        if not serializer.is_valid():
+            return error_response(
+                message="Помилка валідації даних платівки",
+                details=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
 
-        return error_response(
-            message="Помилка валідації даних платівки",
-            details=serializer.errors,
-            status_code=status.HTTP_400_BAD_REQUEST
-        )
+        record = serializer.save()
+        read_serializer = serializers.RecordReadSerializer(record)
+        return Response(read_serializer.data, status=status.HTTP_201_CREATED)
 
 class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
     def get(self, request, pk):
@@ -204,16 +206,16 @@ class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
             return error_response("Платівку не знайдено", status_code=status.HTTP_404_NOT_FOUND)
 
         serializer = serializers.RecordWriteSerializer(record, data=request.data)
-        if serializer.is_valid():
-            update_record = serializer.save()
-            read_serializer = serializers.RecordReadSerializer(update_record)
-            return Response(read_serializer.data, status=status.HTTP_200_OK)
+        if not serializer.is_valid():
+            return error_response(
+                message="Помилка оновлення платівки",
+                details=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
 
-        return error_response(
-            message="Помилка оновлення платівки",
-            details=serializer.errors,
-            status_code=status.HTTP_400_BAD_REQUEST
-        )
+        update_record = serializer.save()
+        read_serializer = serializers.RecordReadSerializer(update_record)
+        return Response(read_serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
         record = self.get_object(pk)
