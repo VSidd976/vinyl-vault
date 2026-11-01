@@ -28,23 +28,17 @@ class ArtistList(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class ArtistDetail(mixins.GetObjectMixin[models.Artist], APIView):
-    # def get_object(self, pk):
-    #     try:
-    #         return models.Artist.objects.get(pk=pk)
-    #     except models.Artist.DoesNotExist:
-    #         return None
-
     def get(self, request, pk):
         artist = self.get_object(pk)
         if not artist:
-            return error_response("Артиств не знайдено", status_code=status.HTTP_404_NOT_FOUND)
+            return error_response("Артиста не знайдено", status_code=status.HTTP_404_NOT_FOUND)
         serializer = serializers.ArtistSerializer(artist)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
         artist = self.get_object(pk)
         if not artist:
-            return error_response("Артиств не знайдено", status_code=status.HTTP_404_NOT_FOUND)
+            return error_response("Артиста не знайдено", status_code=status.HTTP_404_NOT_FOUND)
         
         serializer = serializers.ArtistSerializer(artist, data=request.data)
         if not serializer.is_valid():    

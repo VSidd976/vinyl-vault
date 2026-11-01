@@ -26,7 +26,7 @@ class RecordReadSerializer(serializers.ModelSerializer):
         fields = [
             "id", "title", "artist", "label", "genres",
             "release_year", "price", "stock_quantity", 
-            "description"
+            "description", "cover_image_url"
         ]
 
 class RecordWriteSerializer(serializers.ModelSerializer):
@@ -35,7 +35,7 @@ class RecordWriteSerializer(serializers.ModelSerializer):
         fields = [
             "id", "title", "artist", "label", "genres",
             "release_year", "price", "stock_quantity", 
-            "description"
+            "description", "cover_image_url"
         ]
 
     def validate_price(self, value):
