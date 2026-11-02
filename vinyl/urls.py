@@ -10,5 +10,5 @@ urlpatterns = [
     path("labels/<int:pk>/", views.LabelDetail.as_view(), name="label-detail"),
 
     path("records/", views.RecordList.as_view(), name="record-list"),
-    path("records/<int:pk/", views.RecordDetail.as_view(), name="record-detail")
+    path("records/<int:pk>/", views.RecordDetail.as_view(), name="record-detail")
 ]
