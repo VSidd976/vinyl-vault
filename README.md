@@ -2,6 +2,50 @@
 
 `vinyl-vault` is a site which needs to simulate the work of a real vinyl shop. It will allow users to look through the available records, artists, labels, also narrow their search with filters, take options from catalogue to their shopping cart and order them.
 
+## Instalation
+
+Use git to install `vintl-vault`.
+
+```bash
+git clone https://github.com/VSidd976/vinyl-vault.git
+```
+
+### Dependencies
+
+* **Python 3.12 or later**
+* **Django Rest Framework**
+* **Django Cors Headers**
+
+Create virtual env and use pip to install dependencies.
+
+```bash
+pip install -r requirements.txt
+```
+
+## Migrating
+
+Execute following command to apply migrations for your data base.
+
+```bash
+python manage.py migrate
+```
+
+## Adding data
+
+Execute following command to fill data base with sample data.
+
+```bash
+python manage.py loaddata initial_data
+```
+
+## Executing
+
+Execute following command to run server.
+
+```bash
+python manage.py runserver
+```
+
 ## Endpoints
 
 ### `/records`
