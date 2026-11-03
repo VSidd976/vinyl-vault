@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('vinyl', '0001_initial'),
+        ("vinyl", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='record',
-            name='cover_image_url',
+            model_name="record",
+            name="cover_image_url",
             field=models.URLField(blank=True, max_length=500, null=True),
         ),
     ]

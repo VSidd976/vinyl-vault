@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Artist(models.Model):
     name = models.CharField(max_length=255)
     country = models.CharField(max_length=100, blank=True, null=True)
@@ -8,6 +9,7 @@ class Artist(models.Model):
     def __str__(self):
         return self.name
 
+
 class Label(models.Model):
     name = models.CharField(max_length=255)
     country = models.CharField(max_length=100, blank=True, null=True)
@@ -15,11 +17,13 @@ class Label(models.Model):
     def __str__(self):
         return self.name
 
+
 class Genre(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
+
 
 class Record(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name="records")
