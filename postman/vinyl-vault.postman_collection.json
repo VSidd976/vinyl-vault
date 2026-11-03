@@ -1,0 +1,426 @@
+{
+  "info": {
+    "_postman_id": "8b4707f3-d93a-4bd1-a4f2-443d6aedb80d",
+    "name": "Vinyl vault",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42563322"
+  },
+  "item": [
+    {
+      "name": "Artists",
+      "item": [
+        {
+          "name": "List all artists",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/artists/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "artists",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create new artist",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Led Zeppelin\",\n  \"country\": \"Велика Британія\",\n  \"bio\": \"Британський рок-гурт, що вважається одним із засновників хард-року та хеві-металу.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/artists/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "artists",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get one artist",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/artists/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "artists",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get artist that does not exist",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/artists/999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "artists",
+                "999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update artist",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pink Floyd (Remastered Edition)\",\n  \"country\": \"Велика Британія\",\n  \"bio\": \"Британський рок-гурт, оновлена біографія: один із найуспішніших гуртів в історії, тираж альбомів перевищує 250 мільйонів копій.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/artists/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "artists",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete artist",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/artists/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "artists",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Labels",
+      "item": [
+        {
+          "name": "List all labels",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/labels/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "labels",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create label",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Atlantic Records\",\n  \"country\": \"США\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/labels/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "labels",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update label",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Harvest Records UK\",\n  \"country\": \"Велика Британія\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/labels/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "labels",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete label",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/labels/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "labels",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Records",
+      "item": [
+        {
+          "name": "Lists all records",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/records/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "records",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List records with filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/records/?search=Pink&sort_by=price_asc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "records",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Pink"
+                },
+                {
+                  "key": "sort_by",
+                  "value": "price_asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create new record",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Led Zeppelin IV\",\n  \"artist\": 5,\n  \"label\": 5,\n  \"genres\": [1],\n  \"release_year\": 1971,\n  \"price\": \"1550.00\",\n  \"stock_quantity\": 4,\n  \"description\": \"Безіменний четвертий альбом гурту, що містить легендарну пісню 'Stairway to Heaven'.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/records/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "records",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create invalid record",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Broken Record Test\",\n  \"artist\": 1,\n  \"label\": 1,\n  \"genres\": [],\n  \"release_year\": 1820,\n  \"price\": \"-200.00\",\n  \"stock_quantity\": 0,\n  \"description\": \"Тестовий запис для перевірки валідації ціни та року випуску.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/records/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "records",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update record",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Dark Side of the Moon (50th Anniversary)\",\n  \"artist\": 1,\n  \"label\": 1,\n  \"genres\": [1],\n  \"release_year\": 1973,\n  \"price\": \"1650.00\",\n  \"stock_quantity\": 8,\n  \"description\": \"Ювілейне перевидання до 50-річчя релізу з новим ремастерингом звуку на 180-грамовому вінілі.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/records/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "records",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update invalid record",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Dark Side of the Moon\",\n  \"artist\": 1,\n  \"label\": 1,\n  \"genres\": [1],\n  \"release_year\": 2150,\n  \"price\": \"-50.00\",\n  \"stock_quantity\": 2,\n  \"description\": \"Тест помилки валідації.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/records/999/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "records",
+                "999",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete record",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/records/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "records",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}
