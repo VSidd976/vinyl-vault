@@ -7,8 +7,6 @@ from vinyl import serializers
 from vinyl.exceptions import error_response
 from vinyl import mixins
 
-# Create your views here.
-
 class ArtistList(APIView):
     def get(self, request):
         artists = models.Artist.objects.all()
