@@ -28,6 +28,8 @@ class ArtistList(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class ArtistDetail(mixins.GetObjectMixin[models.Artist], APIView):
+    model = models.Artist
+
     def get(self, request, pk):
         artist = self.get_object(pk)
         if not artist:
@@ -74,6 +76,8 @@ class ArtistDetail(mixins.GetObjectMixin[models.Artist], APIView):
             )
 
 class ArtistRecords(mixins.GetObjectMixin[models.Artist], APIView):
+    model = models.Artist
+
     def get(self, request, pk):
         artist = self.get_object(pk)
         if not artist:
@@ -86,11 +90,11 @@ class ArtistRecords(mixins.GetObjectMixin[models.Artist], APIView):
 class LabelList(APIView):
     def get(self, request):
         labels = models.Label.objects.all()
-        serializer = serializers.LabeSerializer(labels, many=True)
+        serializer = serializers.LabelSerializer(labels, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = serializers.LabeSerializer(data=request.data)
+        serializer = serializers.LabelSerializer(data=request.data)
         if not serializer.is_valid():
             return error_response(
                 message="Помилка валідації лейблу",
@@ -102,6 +106,8 @@ class LabelList(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class LabelDetail(mixins.GetObjectMixin[models.Label], APIView):
+    model = models.Label
+
     def get(self, request, pk):
         label = self.get_object(pk)
         if not label:
@@ -186,6 +192,8 @@ class RecordList(APIView):
         return Response(read_serializer.data, status=status.HTTP_201_CREATED)
 
 class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
+    model = models.Record
+
     def get(self, request, pk):
         record = self.get_object(pk)
         if not record:
