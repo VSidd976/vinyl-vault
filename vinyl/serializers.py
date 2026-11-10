@@ -38,7 +38,6 @@ class RecordReadSerializer(serializers.ModelSerializer):
             "price",
             "stock_quantity",
             "description",
-            "cover_image_url",
         ]
 
 
@@ -55,7 +54,6 @@ class RecordWriteSerializer(serializers.ModelSerializer):
             "price",
             "stock_quantity",
             "description",
-            "cover_image_url",
         ]
 
     def validate_price(self, value):
