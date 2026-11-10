@@ -5,9 +5,12 @@ from rest_framework.views import APIView
 
 from vinyl import mixins, models, serializers
 from vinyl.exceptions import error_response
+from vinyl.permissions import IsAdminOrReadOnly, IsAuthenticatedOrReadOnly
 
 
 class ArtistList(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+
     def get(self, request):
         artists = models.Artist.objects.all()
         serializer = serializers.ArtistSerializer(artists, many=True)
@@ -28,6 +31,7 @@ class ArtistList(APIView):
 
 class ArtistDetail(mixins.GetObjectMixin[models.Artist], APIView):
     model = models.Artist
+    permission_classes = [IsAdminOrReadOnly]
 
     def get(self, request, pk):
         artist = self.get_object(pk)
@@ -97,6 +101,8 @@ class ArtistRecords(mixins.GetObjectMixin[models.Artist], APIView):
 
 
 class LabelList(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+
     def get(self, request):
         labels = models.Label.objects.all()
         serializer = serializers.LabelSerializer(labels, many=True)
@@ -117,6 +123,7 @@ class LabelList(APIView):
 
 class LabelDetail(mixins.GetObjectMixin[models.Label], APIView):
     model = models.Label
+    permission_classes = [IsAdminOrReadOnly]
 
     def get(self, request, pk):
         label = self.get_object(pk)
@@ -164,6 +171,8 @@ class LabelDetail(mixins.GetObjectMixin[models.Label], APIView):
 
 
 class RecordList(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         queryset = (
             models.Record.objects.select_related("artist", "label")
@@ -217,6 +226,7 @@ class RecordList(APIView):
 
 class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
     model = models.Record
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, pk):
         record = self.get_object(pk)
