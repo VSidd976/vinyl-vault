@@ -18,14 +18,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         required=True,
         min_length=8,
         max_length=128,
-        error_message={
+        error_messages={
             "required": "Підтвердження пароля є обов'язковим полем"
         }
     )
     email = serializers.EmailField(
         required=True,
         max_length=254,
-        error_message={
+        error_messages={
             "required": "Email є обов'язковим полем",
             "invalid": "Введіть коректну адресу електронної пошти (name@example.com)"
         }
