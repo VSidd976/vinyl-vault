@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -46,6 +48,42 @@ class RegisterSerializer(serializers.ModelSerializer):
                 }
             }
         }
+
+    def create(sef, validated_data):
+        validated_data.pop("password_confirmation")
+        user = User.objects.create_user(
+            username=validated_data["username"],
+            email=validated_data["email"],
+            password=validated_data["password"],
+            first_name=validated_data.get("first_name", ''),
+            last_name=validated_data.get("last_name", '')
+        )
+        return user
+
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("Користувач із таким псевдонімом вже існує")
+        return value
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Користувач з такою електроною поштою вже існує")
+        return value
+
+    def validate(self, attributes):
+        if attributes.get("password") != attributes.get("password_confirmation"):
+            raise serializers.ValidationError({
+                "password_confiramtion": "Пароль та повторений пароль не збігаються"
+            })
+
+        try:
+            validate_password(attributes.get("password"))
+        except DjangoValidationError as error:
+            raise serializers.ValidationError({
+                "password": list(error.messages)
+            })
+
+        return attributes
 
 class UserProfileSerializer(serializers.ModelSerializer):
     is_admin = serializers.BooleanField(source="is_staff", read_only=True)
