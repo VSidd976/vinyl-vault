@@ -1,0 +1,175 @@
+[
+  {
+    "model": "vinyl.artist",
+    "pk": 1,
+    "fields": {
+      "name": "Pink Floyd",
+      "country": "Велика Британія",
+      "bio": "Британський рок-гурт, один із найвпливовіших в історії рок-музики, піонери психоделічного та прогресивного року."
+    }
+  },
+  {
+    "model": "vinyl.artist",
+    "pk": 2,
+    "fields": {
+      "name": "Miles Davis",
+      "country": "США",
+      "bio": "Американський джазовий трубач і композитор, ключова фігура в еволюції джазу XX століття."
+    }
+  },
+  {
+    "model": "vinyl.artist",
+    "pk": 3,
+    "fields": {
+      "name": "Daft Punk",
+      "country": "Франція",
+      "bio": "Культовий французький електронний дует, що суттєво вплинув на розвиток хаус- та синті-поп музики."
+    }
+  },
+  {
+    "model": "vinyl.artist",
+    "pk": 4,
+    "fields": {
+      "name": "Океан Ельзи",
+      "country": "Україна",
+      "bio": "Український рок-гурт, створений у Львові в 1994 році."
+    }
+  },
+  {
+    "model": "vinyl.label",
+    "pk": 1,
+    "fields": {
+      "name": "Harvest Records",
+      "country": "Велика Британія"
+    }
+  },
+  {
+    "model": "vinyl.label",
+    "pk": 2,
+    "fields": {
+      "name": "Columbia Records",
+      "country": "США"
+    }
+  },
+  {
+    "model": "vinyl.label",
+    "pk": 3,
+    "fields": {
+      "name": "Columbia / Daft Life",
+      "country": "Франція"
+    }
+  },
+  {
+    "model": "vinyl.label",
+    "pk": 4,
+    "fields": {
+      "name": "Lavina Music",
+      "country": "Україна"
+    }
+  },
+  {
+    "model": "vinyl.genre",
+    "pk": 1,
+    "fields": {
+      "name": "Progressive Rock"
+    }
+  },
+  {
+    "model": "vinyl.genre",
+    "pk": 2,
+    "fields": {
+      "name": "Jazz"
+    }
+  },
+  {
+    "model": "vinyl.genre",
+    "pk": 3,
+    "fields": {
+      "name": "Electronic"
+    }
+  },
+  {
+    "model": "vinyl.genre",
+    "pk": 4,
+    "fields": {
+      "name": "Funk"
+    }
+  },
+  {
+    "model": "vinyl.genre",
+    "pk": 5,
+    "fields": {
+      "name": "Ukrainian Rock"
+    }
+  },
+  {
+    "model": "vinyl.record",
+    "pk": 1,
+    "fields": {
+      "title": "The Dark Side of the Moon",
+      "artist": 1,
+      "label": 1,
+      "genres": [1],
+      "release_year": 1973,
+      "price": "1450.00",
+      "stock_quantity": 5,
+      "description": "Легендарний концептуальний альбом, який провів у чартах Billboard понад 900 тижнів."
+    }
+  },
+  {
+    "model": "vinyl.record",
+    "pk": 2,
+    "fields": {
+      "title": "Wish You Were Here",
+      "artist": 1,
+      "label": 1,
+      "genres": [1],
+      "release_year": 1975,
+      "price": "1500.00",
+      "stock_quantity": 3,
+      "description": "Дев'ятий студійний альбом, присвячений засновнику гурту Сіду Барретту."
+    }
+  },
+  {
+    "model": "vinyl.record",
+    "pk": 3,
+    "fields": {
+      "title": "Kind of Blue",
+      "artist": 2,
+      "label": 2,
+      "genres": [2],
+      "release_year": 1959,
+      "price": "1350.00",
+      "stock_quantity": 4,
+      "description": "Найбільш продаваний та канонічний модальний джазовий альбом усіх часів."
+    }
+  },
+  {
+    "model": "vinyl.record",
+    "pk": 4,
+    "fields": {
+      "title": "Random Access Memories",
+      "artist": 3,
+      "label": 3,
+      "genres": [3, 4],
+      "release_year": 2013,
+      "price": "1800.00",
+      "stock_quantity": 7,
+      "description": "Четвертий студійний альбом, що здобув премію «Греммі» за Альбом року."
+    }
+  },
+  {
+    "model": "vinyl.record",
+    "pk": 5,
+    "fields": {
+      "title": "Модель",
+      "artist": 4,
+      "label": 4,
+      "genres": [5],
+      "release_year": 2001,
+      "price": "1600.00",
+      "stock_quantity": 2,
+      "description": "Третій студійний альбом гурту з культовими треками '911' та 'Друг'."
+    }
+  }
+]
