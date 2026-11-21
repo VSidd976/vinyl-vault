@@ -333,3 +333,11 @@ python manage.py runserver
 An image bellow shows the schema of data base.
 
 ![Data base schema](data_base.svg)
+
+## Testing
+
+Execute following command to run unit tests.
+
+```bash
+coverage run --source='vinyl,users' --omit='*/migrations/*' manage.py test
+```

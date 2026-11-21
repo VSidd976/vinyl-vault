@@ -226,7 +226,7 @@ class RecordList(APIView):
 
 class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
     model = models.Record
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     def get(self, request, pk):
         record = self.get_object(pk)
