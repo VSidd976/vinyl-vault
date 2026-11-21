@@ -3,6 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from drf_spectacular.utils import extend_schema, OpenApiResponse
+
 from vinyl import mixins, models, serializers
 from vinyl.exceptions import error_response
 from vinyl.permissions import IsAdminOrReadOnly, IsAuthenticatedOrReadOnly
@@ -173,6 +175,12 @@ class LabelDetail(mixins.GetObjectMixin[models.Label], APIView):
 class RecordList(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+    @extend_schema(
+        summary="Отримати список усіх платівок",
+        description="Повертає повний каталог вінілових платівок. Доступно без автентефікації",
+        responses={200: serializers.RecordReadSerializer(many=True)},
+        tags=["Records"]
+    )
     def get(self, request):
         queryset = (
             models.Record.objects.select_related("artist", "label")
@@ -210,6 +218,17 @@ class RecordList(APIView):
         serializer = serializers.RecordReadSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        summary="Додати нову платівку",
+        description="Створює нову платівку, Вимагає JWT Bearer токен авторизованого користувача",
+        request="RecordWriteSerializer",
+        responses={
+            201: serializers.RecordReadSerializer,
+            400: OpenApiResponse (description="Помилка валідації вхідних даних"),
+            401: OpenApiResponse(description="Необхідна автентифікація")
+        },
+        tags=["Records"]
+    )
     def post(self, request):
         serializer = serializers.RecordWriteSerializer(data=request.data)
         if not serializer.is_valid():
@@ -228,6 +247,14 @@ class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
     model = models.Record
     permission_classes = [IsAdminOrReadOnly]
 
+    @extend_schema(
+        summary="Отримати деталі платівки",
+        responses={
+            200: serializers.RecordReadSerializer,
+            404: OpenApiResponse(description="Платівку не знайдено"),
+        },
+        tags=["Records"]
+    )
     def get(self, request, pk):
         record = self.get_object(pk)
         if not record:
@@ -238,6 +265,19 @@ class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
         serializer = serializers.RecordReadSerializer(record)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        summary="Оновити платівку",
+        description="Повне оновлення інформації про платівку. Доступно лише адміністраторам (is_staff).",
+        request=serializers.RecordWriteSerializer,
+        responses={
+            200: serializers.RecordReadSerializer,
+            400: OpenApiResponse(description="Помилка валідації"),
+            401: OpenApiResponse(description="Необхідна автентифікація"),
+            403: OpenApiResponse(description="Доступ заборонено (потрібні права адміністратора)"),
+            404: OpenApiResponse(description="Платівку не знайдено"),
+        },
+        tags=["Records"]
+    )
     def put(self, request, pk):
         record = self.get_object(pk)
         if not record:
@@ -257,6 +297,17 @@ class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
         read_serializer = serializers.RecordReadSerializer(update_record)
         return Response(read_serializer.data, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        summary="Видалити платівку",
+        description="Видаляє платівку з бази. Доступно лише адміністраторам (is_staff).",
+        responses={
+            204: OpenApiResponse(description="Платівку успішно видалено"),
+            401: OpenApiResponse(description="Необхідна автентифікація"),
+            403: OpenApiResponse(description="Доступ заборонено"),
+            404: OpenApiResponse(description="Платівку не знайдено"),
+        },
+        tags=["Records"]
+    )
     def delete(self, request, pk):
         record = self.get_object(pk)
         if not record:
