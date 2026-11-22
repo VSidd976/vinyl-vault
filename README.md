@@ -341,3 +341,13 @@ Execute following command to run unit tests.
 ```bash
 coverage run --source='vinyl,users' --omit='*/migrations/*' manage.py test
 ```
+
+## Documentation
+
+If you want to see api documentation, go to one of the next routes after deploying server, depending on your preference:
+
+* `http://localhost:8000/api/docs/`: If you want to use Swagger UI.
+
+* `http://localhost:8000/api/redoc/`: If you want to use ReDoc.
+
+* `http://localhost:8000/api/schema`: If you want to download OpenAPI schema.
