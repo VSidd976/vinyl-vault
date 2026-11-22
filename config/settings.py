@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "drf_spectacular",
+    "drf_spectacular_sidecar",
     "vinyl",
     "users",
 ]
@@ -30,12 +31,15 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"
 }
 
-SPECTACULAR_SETTINGS ={
+SPECTACULAR_SETTINGS = {
     "TITLE": "VinylVault API",
     "DESCRIPTION": "REST API для каталогу вінілових платівок",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
-    "COMPONENT_SPLIT_REQUEST": True
+    "COMPONENT_SPLIT_REQUEST": True,
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
 }
 
 MIDDLEWARE = [
