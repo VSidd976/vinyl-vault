@@ -22,6 +22,17 @@ Create virtual env and use pip to install dependencies.
 pip install -r requirements.txt
 ```
 
+## Enviroment
+
+In order to use this project you need to setup django secret and configuration values in `.env` file using `.env.example`
+
+```bash
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+ALLOWED_HOSTS=127.0.0.1,localhost
+CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+```
+
 ## Migrating
 
 Execute following command to apply migrations for your data base.
@@ -44,6 +55,24 @@ Execute following command to run server.
 
 ```bash
 python manage.py runserver
+```
+
+## Documentation
+
+If you want to see api documentation, go to one of the next routes after deploying server, depending on your preference:
+
+* `http://localhost:8000/api/docs/`: If you want to use Swagger UI.
+
+* `http://localhost:8000/api/redoc/`: If you want to use ReDoc.
+
+* `http://localhost:8000/api/schema`: If you want to download OpenAPI schema.
+
+## Testing
+
+Execute following command to run unit tests.
+
+```bash
+coverage run --source='vinyl,users' --omit='*/migrations/*' manage.py test
 ```
 
 ## Endpoints
@@ -333,21 +362,3 @@ python manage.py runserver
 An image bellow shows the schema of data base.
 
 ![Data base schema](data_base.svg)
-
-## Testing
-
-Execute following command to run unit tests.
-
-```bash
-coverage run --source='vinyl,users' --omit='*/migrations/*' manage.py test
-```
-
-## Documentation
-
-If you want to see api documentation, go to one of the next routes after deploying server, depending on your preference:
-
-* `http://localhost:8000/api/docs/`: If you want to use Swagger UI.
-
-* `http://localhost:8000/api/redoc/`: If you want to use ReDoc.
-
-* `http://localhost:8000/api/schema`: If you want to download OpenAPI schema.
