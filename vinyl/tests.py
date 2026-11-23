@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
-
-from rest_framework.test import APITestCase
 from rest_framework import status
+from rest_framework.test import APITestCase
 
 from vinyl.models import Record
 
@@ -15,15 +14,11 @@ class RecordAPITest(APITestCase):
         self.not_found_url = "/api/v1/records/9999/"
 
         self.regular_user = User.objects.create_user(
-            username="regular_user",
-            email="user@example.com",
-            password="UserPassword"
+            username="regular_user", email="user@example.com", password="UserPassword"
         )
 
         self.admin_user = User.objects.create_superuser(
-            username="admin_user",
-            email="admin@example.com",
-            password="AdminPassword"
+            username="admin_user", email="admin@example.com", password="AdminPassword"
         )
 
         self.valid_payload = {
@@ -34,7 +29,7 @@ class RecordAPITest(APITestCase):
             "release_year": 1969,
             "price": "1550.00",
             "stock_quantity": 6,
-            "description": "Класичний альбом."
+            "description": "Класичний альбом.",
         }
 
     def test_get_records_list_as_guest(self):
@@ -66,7 +61,7 @@ class RecordAPITest(APITestCase):
             "label": 1,
             "genres": [],
             "release_year": 1800,
-            "price": "-100.00"
+            "price": "-100.00",
         }
         response = self.client.post(self.list_url, invalid_payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -83,7 +78,9 @@ class RecordAPITest(APITestCase):
 
         response = self.client.put(self.detail_url, updated_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["title"], "The Dark Side of the Moon (Remastered)")
+        self.assertEqual(
+            response.data["title"], "The Dark Side of the Moon (Remastered)"
+        )
 
     def test_delete_record_as_regular_user_forbidden(self):
         self.client.force_authenticate(user=self.regular_user)
@@ -100,4 +97,3 @@ class RecordAPITest(APITestCase):
         self.client.force_authenticate(user=self.admin_user)
         response = self.client.delete(self.not_found_url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        
