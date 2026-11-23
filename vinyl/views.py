@@ -5,9 +5,14 @@ from rest_framework.views import APIView
 
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
+import logging
+
 from vinyl import mixins, models, serializers
 from vinyl.exceptions import error_response
 from vinyl.permissions import IsAdminOrReadOnly, IsAuthenticatedOrReadOnly
+
+
+logger = logging.getLogger("vinyl")
 
 
 class ArtistList(APIView):
@@ -182,6 +187,7 @@ class RecordList(APIView):
         tags=["Records"]
     )
     def get(self, request):
+        logger.debug(f"Запит на отримання списку платівок від користувача: '{request.user}'")
         queryset = (
             models.Record.objects.select_related("artist", "label")
             .prefetch_related("genres")
@@ -232,6 +238,7 @@ class RecordList(APIView):
     def post(self, request):
         serializer = serializers.RecordWriteSerializer(data=request.data)
         if not serializer.is_valid():
+            logger.warning(f"Помилка валідації при створенні платівки користувачем '{request.user.username}': {serializer.errors}")
             return error_response(
                 message="Помилка валідації даних платівки",
                 details=serializer.errors,
@@ -240,6 +247,7 @@ class RecordList(APIView):
 
         record = serializer.save()
         read_serializer = serializers.RecordReadSerializer(record)
+        logger.info(f"Користувач '{request.user.username}' створив нову платівку ID={record.id} ('{record.title}')")
         return Response(read_serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -258,6 +266,7 @@ class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
     def get(self, request, pk):
         record = self.get_object(pk)
         if not record:
+            logger.warning(f"Спроба переглянути неіснуючу платівку ID={pk}")
             return error_response(
                 "Платівку не знайдено", status_code=status.HTTP_404_NOT_FOUND
             )
@@ -281,12 +290,14 @@ class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
     def put(self, request, pk):
         record = self.get_object(pk)
         if not record:
+            logger.warning(f"Адміністратор '{request.user.username}' намагався оновити неіснуючу платівку ID={pk}")
             return error_response(
                 "Платівку не знайдено", status_code=status.HTTP_404_NOT_FOUND
             )
 
         serializer = serializers.RecordWriteSerializer(record, data=request.data)
         if not serializer.is_valid():
+            logger.warning(f"Помилка валідації при оновленні платівки ID={pk}: {serializer.errors}")
             return error_response(
                 message="Помилка оновлення платівки",
                 details=serializer.errors,
@@ -295,6 +306,7 @@ class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
 
         update_record = serializer.save()
         read_serializer = serializers.RecordReadSerializer(update_record)
+        logger.info(f"Адміністратор '{request.user.username}' оновив платівку ID={pk}")
         return Response(read_serializer.data, status=status.HTTP_200_OK)
 
     @extend_schema(
@@ -311,9 +323,11 @@ class RecordDetail(mixins.GetObjectMixin[models.Record], APIView):
     def delete(self, request, pk):
         record = self.get_object(pk)
         if not record:
+            logger.warning(f"Адміністратор '{request.user.username}' намагався видалити неіснуючу платівку ID={pk}")
             return error_response(
                 "Платівку не знайдено", status_code=status.HTTP_404_NOT_FOUND
             )
 
         record.delete()
+        logger.info(f"Адміністратор '{request.user.username}' видалив платівку ID={pk} ('{record.title}')")
         return Response(status=status.HTTP_204_NO_CONTENT)
